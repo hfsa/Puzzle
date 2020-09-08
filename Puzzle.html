@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Number Puzzle</title>
+  <link href='https://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <style>
+    
+    html {
+      box-sizing: border-box;
+      background: #ffc600;
+      font-family: 'helvetica neue';
+    }
+    
+    input {
+      height:60px;
+      width: 500px;
+      padding: 5px;
+      margin: 5px;
+      font-weight: 500;
+      font-size: larger;
+      border-color: aliceblue;
+    }
+    
+    .btn {
+      height: 55px;
+      width: 200px;
+      margin: 25px;
+      padding: 5px;
+      color:#ffffff;
+      background-color: cornflowerblue ;
+      box-shadow: 15px solid #eaeff7;
+      font-size: 16px;
+      font-weight: bold;
+      border: #091e3d;
+    }
+
+    .btn:hover {
+      cursor: pointer;
+      background-color: salmon;
+    }
+
+    .container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    text-align: center;
+    width: 60vw; 
+    color: rgb(223, 18, 18);
+    font-weight: 500;
+    font-size: x-large;  
+   }  
+   
+   .child-green {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(166, 245, 19);
+    height: 20vh;
+    width: 20vw;
+    text-align: center;
+
+    }
+    
+    .child-orange {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(237, 150, 100);
+    height: 20vh;
+    width: 20vw;
+    text-align: center;
+}
+
+    .child-pink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(237, 100, 237);
+    height: 20vh;
+    width: 20vw;
+    text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    width: 100vw;
+  }
+  .child-green {
+    width: 100vw;
+  }
+  .child-orange {
+    width: 100vw;
+  }
+  .child-pink {
+    width: 100vw;
+  }
+}
+
+  </style>
+    <input type="number" id="input" class="input" placeholder="Add input values..">
+    <button class="btn" id="addVal">ADD</button> 
+    
+    <div  id="container" class="container">
+    </div>
+
+   
+    <div>
+    <button class="btn" id="sort">SORT</button>
+    <button class="btn" id="shuffle">SHUFFLE</button>
+   </div> 
+  
+
+  <script>
+    // Get the Dom Elements
+    const sort = document.getElementById('sort');
+    const shuffle = document.getElementById('shuffle');
+    const input = document.getElementById('input');
+    const addVal = document.getElementById('addVal');
+    // Create a colors class array
+    let colorArray = ['child-green','child-pink', 'child-orange'];
+
+
+    // Function to Add Data values to Dom
+    function addData(val) {
+    // Choose a color class Randomly
+    let cName = colorArray[Math.floor(Math.random() * colorArray.length)];
+
+    // Create a child Div Element
+    let tag = document.createElement("div");
+    let text = document.createTextNode(val);
+    tag.appendChild(text);
+  
+    let att = document.createAttribute("class");       // Create a "class" attribute
+    att.value = cName;                               // Set the value of the class attribute
+    tag.setAttributeNode(att); 
+  
+    // Add an Attribute to the element to help with sorting/shuffling
+    let dataSet = document.createAttribute("data-value");
+    dataSet.value = val;
+    tag.setAttributeNode(dataSet);
+
+    // Add the child element with its attributes to parent
+    let element = document.getElementById("container");
+     element.appendChild(tag);
+     }
+
+    // Function to Sort Elements numerically
+    function sortVal(){
+     let dataOrder = (a, b) => a.dataset.value - b.dataset.value;
+     // select all children using querySelectorAll wild card search
+     const ordered = [...document.querySelectorAll('[class^=child]')].sort(dataOrder);
+     ordered.forEach((elem, index) => {
+     elem.style.order = index
+  })
+
+}
+  // Function to Shuffle Elements
+  function shuffleVal() {
+      let dataOrder = (a, b) => 0.5 - Math.random();
+      // select all children using querySelectorAll wild card search
+      const ordered = [...document.querySelectorAll('[class^=child]')].sort(dataOrder);
+      ordered.forEach((elem, index) => {
+      elem.style.order = index
+  })
+  }
+     
+
+
+// Setup Event Listeners on Dom Elements
+     // Sort Elements
+      sort.addEventListener('click', () => {
+        sortVal() });
+
+      // Shuffle Elements
+      shuffle.addEventListener('click', () => {
+        shuffleVal();
+      });
+
+      // Add Elements
+      addVal.addEventListener('click', () => {
+       if(input.value) {
+       addData(input.value);
+        input.value = '';
+       } 
+      });
+  </script>
+
+</body>
+</html>
